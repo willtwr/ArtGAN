@@ -38,8 +38,8 @@ be = gen_backend(backend='cpu', batch_size=batch_size, datatype=np.float32)
 root_files = '/home/william/PyProjects/MyNeon/dataset/Cifar10'
 manifestfile = os.path.join(root_files, 'train-index.csv')
 testmanifest = os.path.join(root_files, 'val-index.csv')
-train_stl = stl_train_loader(manifestfile, root_files, be, h=im_size[0], w=im_size[1])
-test_stl = stl_validation_loader(testmanifest, root_files, be, h=im_size[0], w=im_size[1])
+train_stl = train_loader(manifestfile, root_files, be, h=im_size[0], w=im_size[1])
+test_stl = validation_loader(testmanifest, root_files, be, h=im_size[0], w=im_size[1])
 stlOneHot = OneHot(be, n_classes_stl)
 
 # Graph input
