@@ -13,7 +13,7 @@ import os
 # Create folders to store images
 genstl_dir, realstl_dir, genstl_dir64 = createfolders("./genimgs/CIFAR64GANAE", "/gen", "/real", "/gen64")
 # Create folder to store models
-dir_name = './models/CIFAR64cganAE'
+dir_name = './models/CIFAR64GANAE'
 if not os.path.exists(dir_name):
     os.mkdir(dir_name)
 
