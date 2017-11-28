@@ -35,7 +35,7 @@ tf.set_random_seed(1234)
 
 # DataLoader
 be = gen_backend(backend='cpu', batch_size=batch_size, datatype=np.float32)
-root_files = '/home/william/PyProjects/MyNeon/dataset/Cifar10'
+root_files = './dataset/Cifar10'
 manifestfile = os.path.join(root_files, 'train-index.csv')
 testmanifest = os.path.join(root_files, 'val-index.csv')
 train_stl = train_loader(manifestfile, root_files, be, h=im_size[0], w=im_size[1])
