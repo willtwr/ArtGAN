@@ -8,7 +8,7 @@ import os
 
 
 # Create folders to store images
-genstl_dir, gen_dir128 = createfolders("./genimgs/CIFAR64cganAEsample", "/gen", "/gen64")
+genstl_dir, gen_dir128 = createfolders("./genimgs/CIFAR64GANAEsample", "/gen", "/gen64")
 
 # Parameters
 batch_size = 100
@@ -74,15 +74,15 @@ init = tf.global_variables_initializer()
 # Config for session
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
-# Train
+# Generate
 with tf.Session(config=config) as sess:
     sess.run(init)
     saver = tf.train.Saver(max_to_keep=None)
-    saver.restore(sess=sess, save_path='./models/CIFAR64cganAE1/cdgan50000.ckpt')
+    saver.restore(sess=sess, save_path='./models/CIFAR64GANAE/cdgan50000.ckpt')
     coord = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(coord=coord)
 
-    # update generator
+    # run generator
     gen_img, gen_img128 = sess.run([samples, samples128])
 
     # Store Generated
@@ -90,7 +90,7 @@ with tf.Session(config=config) as sess:
     genmix_imgs = np.uint8(genmix_imgs[:, :, :, ::-1])
     genmix_imgs = drawblock(genmix_imgs, n_classes_stl)
     imsave(os.path.join(genstl_dir, 'sample1.jpg'), genmix_imgs)
-    # Store Generated 96
+    # Store Generated 64
     genmix_imgs = (np.transpose(gen_img128, [0, 2, 3, 1]) + 1.) * 127.5
     genmix_imgs = np.uint8(genmix_imgs[:, :, :, ::-1])
     genmix_imgs = drawblock(genmix_imgs, n_classes_stl)
