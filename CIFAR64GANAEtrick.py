@@ -2,7 +2,7 @@ import tensorflow as tf
 from layers import conv2d, linear, flatten, nnupsampling, batchnorm, gaussnoise, pool
 from activations import lrelu
 from op import log_sum_exp
-from data_stl10 import stl_train_loader, stl_validation_loader
+from data_loader import train_loader, validation_loader
 from neon.backends import gen_backend
 import numpy as np
 from utils import drawblock, createfolders, OneHot, image_reshape
@@ -11,7 +11,7 @@ import os
 
 
 # Create folders to store images
-genstl_dir, realstl_dir, genstl_dir64 = createfolders("./genimgs/CIFAR64cganAE", "/gen", "/real", "/gen64")
+genstl_dir, realstl_dir, genstl_dir64 = createfolders("./genimgs/CIFAR64GANAE", "/gen", "/real", "/gen64")
 # Create folder to store models
 dir_name = './models/CIFAR64cganAE'
 if not os.path.exists(dir_name):
