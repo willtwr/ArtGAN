@@ -11,9 +11,9 @@ import os
 
 
 # Create folders to store images
-genstl_dir, realstl_dir, gen_dir128 = createfolders("./genimgs/CUB128RcganAE", "/gen", "/real", "/gen128")
+genstl_dir, realstl_dir, gen_dir128 = createfolders("./genimgs/CUB128GANAE", "/gen", "/real", "/gen128")
 # Create folder to store models
-dir_name = './models/CUB128RcganAE'
+dir_name = './models/CUB128GANAE'
 if not os.path.exists(dir_name):
     os.mkdir(dir_name)
 
@@ -35,7 +35,7 @@ tf.set_random_seed(1234)
 
 # DataLoader
 be = gen_backend(backend='cpu', batch_size=batch_size, datatype=np.float32)
-root_files = '/home/william/PyProjects/TFcodes/dataset/cub200'
+root_files = './dataset/cub200'
 manifestfile = os.path.join(root_files, 'train-index.csv')
 testmanifest = os.path.join(root_files, 'val-index.csv')
 train_stl = train_loader(manifestfile, root_files, be, h=im_size[0], w=im_size[1], scale=[0.875, 0.875])
