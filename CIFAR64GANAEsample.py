@@ -8,24 +8,24 @@ import os
 
 
 # Create folders to store images
-genstl_dir, gen_dir128 = createfolders("./genimgs/CIFAR64GANAEsample", "/gen", "/gen64")
+gen_dir, gen_dir128 = createfolders("./genimgs/CIFAR64GANAEsample", "/gen", "/gen64")
 
 # Parameters
 batch_size = 100
 zdim = 100
-n_classes_stl = 10
+n_classes = 10
 gname = 'g_'
 tf.set_random_seed(5555)  # use different seed to generate different set of images
 
 # Graph input
 z = tf.random_uniform([batch_size, zdim], -1, 1)
-iny_stl = tf.constant(np.tile(np.eye(n_classes_stl, dtype=np.float32), [batch_size / n_classes_stl + 1, 1])[:batch_size, :])
+iny = tf.constant(np.tile(np.eye(n_classes, dtype=np.float32), [batch_size / n_classes + 1, 1])[:batch_size, :])
 
 
 # Generator
-def generator(inp_z, inp_ystl, reuse=False):
+def generator(inp_z, inp_y, reuse=False):
     with tf.variable_scope('Generator', reuse=reuse):
-        inp = tf.concat([inp_z, inp_ystl], 1)
+        inp = tf.concat([inp_z, inp_y], 1)
 
         g1 = linear(inp, 512 * 4 * 4, name=gname + 'deconv1')
         g1 = batchnorm(g1, is_training=tf.constant(True), name=gname + 'bn1g')
@@ -67,7 +67,7 @@ def generator(inp_z, inp_ystl, reuse=False):
         return g5b_32, g5b
 
 # Call functions
-samples, samples128 = generator(z, iny_stl)
+samples, samples128 = generator(z, iny)
 
 # Initialize the variables
 init = tf.global_variables_initializer()
@@ -88,12 +88,12 @@ with tf.Session(config=config) as sess:
     # Store Generated
     genmix_imgs = (np.transpose(gen_img, [0, 2, 3, 1]) + 1.) * 127.5
     genmix_imgs = np.uint8(genmix_imgs[:, :, :, ::-1])
-    genmix_imgs = drawblock(genmix_imgs, n_classes_stl)
-    imsave(os.path.join(genstl_dir, 'sample1.jpg'), genmix_imgs)
+    genmix_imgs = drawblock(genmix_imgs, n_classes)
+    imsave(os.path.join(gen_dir, 'sample1.jpg'), genmix_imgs)
     # Store Generated 64
     genmix_imgs = (np.transpose(gen_img128, [0, 2, 3, 1]) + 1.) * 127.5
     genmix_imgs = np.uint8(genmix_imgs[:, :, :, ::-1])
-    genmix_imgs = drawblock(genmix_imgs, n_classes_stl)
+    genmix_imgs = drawblock(genmix_imgs, n_classes)
     imsave(os.path.join(gen_dir128, 'sample1.jpg'), genmix_imgs)
 
     coord.request_stop()
