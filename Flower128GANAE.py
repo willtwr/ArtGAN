@@ -11,7 +11,7 @@ import os
 
 
 # Create folders to store images
-genstl_dir, realstl_dir, gen_dir128 = createfolders("./genimgs/Flower128GANAE", "/gen", "/real", "/gen128")
+gen_dir, real_dir, gen_dir128 = createfolders("./genimgs/Flower128GANAE", "/gen", "/real", "/gen128")
 # Create folder to store models
 dir_name = './models/Flower128GANAE'
 if not os.path.exists(dir_name):
@@ -27,7 +27,7 @@ save_iter = 1000
 lr_init = 0.0002
 batch_size = 100
 zdim = 100
-n_classes_stl = 102
+n_classes = 102
 dropout = 0.2
 im_size = [64, 64]
 dname, gname = 'd_', 'g_'
@@ -38,18 +38,18 @@ be = gen_backend(backend='cpu', batch_size=batch_size, datatype=np.float32)
 root_files = './dataset/flower102'
 manifestfile = os.path.join(root_files, 'train-index.csv')
 testmanifest = os.path.join(root_files, 'val-index.csv')
-train_stl = train_loader(manifestfile, root_files, be, h=im_size[0], w=im_size[1], scale=[0.875, 0.875])
-test_stl = validation_loader(testmanifest, root_files, be, h=im_size[0], w=im_size[1], scale=[0.875, 0.875], ncls=n_classes_stl)
-stlOneHot = OneHot(be, n_classes_stl)
+train = train_loader(manifestfile, root_files, be, h=im_size[0], w=im_size[1], scale=[0.875, 0.875])
+test = validation_loader(testmanifest, root_files, be, h=im_size[0], w=im_size[1], scale=[0.875, 0.875], ncls=n_classes)
+OneHot = OneHot(be, n_classes)
 
 # Graph input
 is_train = tf.placeholder(tf.bool)
 keep_prob = tf.placeholder(tf.float32)
 x_n = tf.placeholder(tf.float32, [batch_size, 3, im_size[0], im_size[1]])
-y_stl = tf.placeholder(tf.float32, [batch_size, n_classes_stl])
+y = tf.placeholder(tf.float32, [batch_size, n_classes])
 lr_tf = tf.placeholder(tf.float32)
 z = tf.random_uniform([batch_size, zdim], -1, 1)
-iny_stl = tf.placeholder(tf.float32, [batch_size, n_classes_stl])
+iny = tf.placeholder(tf.float32, [batch_size, n_classes])
 
 
 # Discriminator
@@ -85,7 +85,7 @@ def discriminator(inp, reuse=False):
 
         flat = flatten(conv4b)
         # Classifier
-        clspred = linear(flat, n_classes_stl, name=dname + 'cpred')
+        clspred = linear(flat, n_classes, name=dname + 'cpred')
         # Decoder
         g1 = conv2d(conv4b, nout=512, kernel=3, name=dname + 'deconv1')
         g1 = batchnorm(g1, is_training=tf.constant(True), name=dname + 'bn1g')
@@ -117,9 +117,9 @@ def discriminator(inp, reuse=False):
 
 
 # Generator
-def generator(inp_z, inp_ystl, reuse=False):
+def generator(inp_z, inp_y, reuse=False):
     with tf.variable_scope('Generator', reuse=reuse):
-        inp = tf.concat([inp_z, inp_ystl], 1)
+        inp = tf.concat([inp_z, inp_y], 1)
         sz = 4
         g1 = linear(inp, 512 * sz * sz, name=gname + 'deconv1')
         g1 = batchnorm(g1, is_training=tf.constant(True), name=gname + 'bn1g')
@@ -163,7 +163,7 @@ def generator(inp_z, inp_ystl, reuse=False):
 
 # Call functions
 Opred_n, recon_n, _ = discriminator(x_n)
-samples, samples128 = generator(z, iny_stl)
+samples, samples128 = generator(z, iny)
 Opred_g, recon_g, embed = discriminator(samples, reuse=True)
 
 # Get trainable variables and split
@@ -176,7 +176,7 @@ print [var.name for var in g_vars]
 # Define D loss
 lreal = log_sum_exp(Opred_n)
 lfake = log_sum_exp(Opred_g)
-cost_On = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=Opred_n, labels=y_stl))
+cost_On = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=Opred_n, labels=y))
 cost_Dn = - tf.reduce_mean(lreal) + tf.reduce_mean(tf.nn.softplus(lreal))
 cost_Dg_fake = tf.reduce_mean(tf.nn.softplus(lfake))
 cost_msen = tf.reduce_mean(tf.square(recon_n - x_n)) * 0.5
@@ -184,7 +184,7 @@ cost_mseg = tf.reduce_mean(tf.square(recon_g - samples)) * 0.5
 D_loss = cost_On + cost_Dn + cost_Dg_fake + cost_msen
 # Define G loss
 cost_Dg = - tf.reduce_mean(lfake) + tf.reduce_mean(tf.nn.softplus(lfake))
-cost_Og = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=Opred_g, labels=iny_stl))
+cost_Og = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=Opred_g, labels=iny))
 G_loss = cost_Dg + cost_Og + cost_mseg
 
 # Define optimizer
@@ -192,12 +192,12 @@ d_optimizer = tf.train.AdamOptimizer(learning_rate=lr_tf, beta1=0.5).minimize(D_
 g_optimizer = tf.train.AdamOptimizer(learning_rate=lr_tf, beta1=0.5).minimize(G_loss, var_list=g_vars)
 
 # Evaluate model
-Oaccuracy = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(Opred_n, 1), tf.argmax(y_stl, 1)), tf.float32))
+Oaccuracy = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(Opred_n, 1), tf.argmax(y, 1)), tf.float32))
 
 # Initialize the variables
 init = tf.global_variables_initializer()
 # Reset train dataset
-train_stl.reset()
+train.reset()
 # Config for session
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
@@ -212,21 +212,21 @@ with tf.Session(config=config) as sess:
         else:
             lr = lr_init / 10.
         # Set current fake label
-        inds = np.repeat(np.random.permutation(n_classes_stl)[:20], 5)
-        fake_y = np.zeros((batch_size, n_classes_stl))
+        inds = np.repeat(np.random.permutation(n_classes)[:20], 5)
+        fake_y = np.zeros((batch_size, n_classes))
         fake_y[np.arange(batch_size), inds] = 1.
         # Fetch minibatch
-        batch_x_stl, batch_y_stl = train_stl.next()
-        batch_x_stl = image_reshape(batch_x_stl.get(), im_size, input_format='tanh')
-        batch_y_stl = stlOneHot.transform(batch_y_stl).get().transpose()
+        batch_x, batch_y = train.next()
+        batch_x = image_reshape(batch_x.get(), im_size, input_format='tanh')
+        batch_y = OneHot.transform(batch_y).get().transpose()
         # update discriminator
         _, lossDn, lossOn, lossFake = sess.run([d_optimizer, cost_Dn, cost_On, cost_Dg_fake], feed_dict={
-            x_n: batch_x_stl, y_stl: batch_y_stl, iny_stl: fake_y,
+            x_n: batch_x, y: batch_y, iny: fake_y,
             keep_prob: 1. - dropout, is_train: True, lr_tf: lr
         })
         # update generator
         _, gen_img, gen_img128 = sess.run([g_optimizer, samples, samples128], feed_dict={
-            iny_stl: fake_y,
+            iny: fake_y,
             keep_prob: 1., is_train: True, lr_tf: lr
         })
         # print losses
@@ -235,12 +235,12 @@ with tf.Session(config=config) as sess:
         # Evaluate classification accuracy
         if i_iter % eval_iter == 0 or i_iter == max_iter - 1:
             total_Oaccuracy = 0.
-            test_stl.reset()
-            for mb_idx, (batch_x, batch_y) in enumerate(test_stl):
+            test.reset()
+            for mb_idx, (batch_x, batch_y) in enumerate(test):
                 batch_x = image_reshape(batch_x.get(), im_size, input_format='tanh')
                 batch_y = batch_y.get().transpose()
                 total_Oaccuracy += sess.run(Oaccuracy,
-                                            feed_dict={x_n: batch_x, y_stl: batch_y, keep_prob: 1., is_train: False})
+                                            feed_dict={x_n: batch_x, y: batch_y, keep_prob: 1., is_train: False})
             print 'Iteration %i, Accuracy: %.2f' % (i_iter, total_Oaccuracy / mb_idx)
         # Store images
         if i_iter % store_img_iter == 0 or i_iter == max_iter - 1:
@@ -248,17 +248,17 @@ with tf.Session(config=config) as sess:
             genmix_imgs = (np.transpose(gen_img, [0, 2, 3, 1]) + 1.) * 127.5
             genmix_imgs = np.uint8(genmix_imgs[:, :, :, ::-1])
             genmix_imgs = drawblock(genmix_imgs, 10)
-            imsave(os.path.join(genstl_dir, '%i.jpg' % i_iter), genmix_imgs)
+            imsave(os.path.join(gen_dir, '%i.jpg' % i_iter), genmix_imgs)
             # Store Generated 96
             genmix_imgs = (np.transpose(gen_img128, [0, 2, 3, 1]) + 1.) * 127.5
             genmix_imgs = np.uint8(genmix_imgs[:, :, :, ::-1])
             genmix_imgs = drawblock(genmix_imgs, 10)
             imsave(os.path.join(gen_dir128, '%i.jpg' % i_iter), genmix_imgs)
             # Store Real
-            real_imgs = (np.transpose(batch_x_stl, [0, 2, 3, 1]) + 1.) * 127.5
+            real_imgs = (np.transpose(batch_x, [0, 2, 3, 1]) + 1.) * 127.5
             real_imgs = np.uint8(real_imgs[:, :, :, ::-1])
             real_imgs = drawblock(real_imgs, 10)
-            imsave(os.path.join(realstl_dir, '%i.jpg' % i_iter), real_imgs)
+            imsave(os.path.join(real_dir, '%i.jpg' % i_iter), real_imgs)
         # Store model
         if i_iter % save_iter == 0 or i_iter == max_iter - 1 or i_iter == max_iter:
             save_path = saver.save(sess, dir_name + '/cdgan%i.ckpt' % i_iter)
