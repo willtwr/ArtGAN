@@ -11,9 +11,9 @@ import os
 
 
 # Create folders to store images
-genstl_dir, realstl_dir, gen_dir128 = createfolders("./genimgs/Flower128RcganAE", "/gen", "/real", "/gen128")
+genstl_dir, realstl_dir, gen_dir128 = createfolders("./genimgs/Flower128GANAE", "/gen", "/real", "/gen128")
 # Create folder to store models
-dir_name = './models/Flower128RcganAE'
+dir_name = './models/Flower128GANAE'
 if not os.path.exists(dir_name):
     os.mkdir(dir_name)
 
@@ -35,7 +35,7 @@ tf.set_random_seed(1234)
 
 # DataLoader
 be = gen_backend(backend='cpu', batch_size=batch_size, datatype=np.float32)
-root_files = '/home/william/PyProjects/TFcodes/dataset/flower102'
+root_files = './dataset/flower102'
 manifestfile = os.path.join(root_files, 'train-index.csv')
 testmanifest = os.path.join(root_files, 'val-index.csv')
 train_stl = train_loader(manifestfile, root_files, be, h=im_size[0], w=im_size[1], scale=[0.875, 0.875])
@@ -185,7 +185,7 @@ D_loss = cost_On + cost_Dn + cost_Dg_fake + cost_msen
 # Define G loss
 cost_Dg = - tf.reduce_mean(lfake) + tf.reduce_mean(tf.nn.softplus(lfake))
 cost_Og = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=Opred_g, labels=iny_stl))
-G_loss = cost_Dg + cost_Og + cost_mseg  # + pullaway_loss(embed)*0.1
+G_loss = cost_Dg + cost_Og + cost_mseg
 
 # Define optimizer
 d_optimizer = tf.train.AdamOptimizer(learning_rate=lr_tf, beta1=0.5).minimize(D_loss, var_list=d_vars)
