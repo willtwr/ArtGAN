@@ -79,9 +79,6 @@ def discriminator(inp, reuse=False):
         conv4 = batchnorm(conv4, is_training=is_train, name=dname + 'bn4')
         conv4 = lrelu(conv4, 0.2)
         # 4
-        # conv4b = conv2d(conv4, 512, kernel=3, strides=1, name=dname + 'conv4b')
-        # conv4b = batchnorm(conv4b, is_training=is_train, name=dname + 'bn4b')
-        # conv4b = lrelu(conv4b, 0.2)
 
         flat = flatten(conv4)
         # Classifier
@@ -141,10 +138,6 @@ def generator(inp_z, inp_y, reuse=False):
         g4 = conv2d(g4, nout=128, kernel=3, name=gname + 'deconv4')
         g4 = batchnorm(g4, is_training=tf.constant(True), name=gname + 'bn4g')
         g4 = lrelu(g4, 0.2)
-
-        # g4b = conv2d(g4, nout=128, kernel=3, name=gname + 'deconv4b')
-        # g4b = batchnorm(g4b, is_training=tf.constant(True), name=gname + 'bn4bg')
-        # g4b = lrelu(g4b, 0.2)
 
         g5 = nnupsampling(g4, [64, 64])
         g5 = conv2d(g5, nout=64, kernel=3, name=gname + 'deconv5')
