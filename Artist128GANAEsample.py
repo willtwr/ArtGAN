@@ -80,7 +80,7 @@ config.gpu_options.allow_growth = True
 with tf.Session(config=config) as sess:
     sess.run(init)
     saver = tf.train.Saver(max_to_keep=None)
-    saver.restore(sess=sess, save_path='./models/Artist128GANAE1/cdgan49999.ckpt')
+    saver.restore(sess=sess, save_path='./models/Artist128GANAE/cdgan49999.ckpt')
 
     # run generator
     gen_img, gen_img128 = sess.run([samples, samples128])
