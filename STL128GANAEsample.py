@@ -79,13 +79,13 @@ init = tf.global_variables_initializer()
 # Config for session
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
-# Train
+# Generate
 with tf.Session(config=config) as sess:
     sess.run(init)
     saver = tf.train.Saver(max_to_keep=None)
     saver.restore(sess=sess, save_path='./models/STL128GANAE/cdgan49999.ckpt')
 
-    # update generator
+    # generate
     gen_img, gen_img128 = sess.run([samples, samples128])
 
     # Store Generated
