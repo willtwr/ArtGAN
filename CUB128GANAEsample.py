@@ -17,7 +17,6 @@ n_classes = 200
 im_size = [64, 64]
 gname = 'g_'
 tf.set_random_seed(5555)  # use different seed to generate different set of images
-# ll = [19, 51, 80, 87]
 
 # Graph input
 z = tf.random_uniform([batch_size, zdim], -1, 1)
@@ -82,10 +81,7 @@ config.gpu_options.allow_growth = True
 with tf.Session(config=config) as sess:
     sess.run(init)
     saver = tf.train.Saver(max_to_keep=None)
-    saver.restore(sess=sess, save_path='./models/CUB128RcganAE2/cdgan29999.ckpt')
-
-    # sams = np.zeros((len(ll) * 4, im_size[0], im_size[1], 3))
-    # samsL = np.zeros((len(ll) * 4, im_size[0]*2, im_size[1]*2, 3))
+    saver.restore(sess=sess, save_path='./models/CUB128GANAE/cdgan29999.ckpt')
 
     gen_img, gen_img128 = sess.run([samples, samples128])
     gen_img = (np.transpose(gen_img, [0, 2, 3, 1]) + 1.) * 127.5
@@ -97,14 +93,3 @@ with tf.Session(config=config) as sess:
     imsave(os.path.join(gen_dir, 'sample.jpg'), gg)
     ggL = drawblock(gen_img128, 10)
     imsave(os.path.join(gen_dir128, 'sample.jpg'), ggL)
-
-    #     for j, v in enumerate(ll):
-    #         sams[4*j+i, :, :, :] = gen_img[v, :, :, :]
-    #         samsL[4*j+i, :, :, :] = gen_img128[v, :, :, :]
-    #
-    # for j, v in enumerate(ll):
-    #     genmix_imgs = drawblock(sams[j*4:(j+1)*4, :, :, :], 2)
-    #     imsave(os.path.join(gen_dir, 'sample%i.jpg' % v), genmix_imgs)
-    #
-    #     genmix_imgs = drawblock(samsL[j*4:(j+1)*4, :, :, :], 2)
-    #     imsave(os.path.join(gen_dir128, 'sample%i.jpg' % v), genmix_imgs)
