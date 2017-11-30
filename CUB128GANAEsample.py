@@ -77,7 +77,7 @@ init = tf.global_variables_initializer()
 # Config for session
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
-# Train
+# Generate
 with tf.Session(config=config) as sess:
     sess.run(init)
     saver = tf.train.Saver(max_to_keep=None)
