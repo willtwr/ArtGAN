@@ -16,7 +16,7 @@ zdim = 100
 n_classes = 10
 im_size = [64, 64]
 gname = 'g_'
-tf.set_random_seed(6666)
+tf.set_random_seed(6666)  # use different seed to generate different set of images
 
 # Graph input
 z = tf.random_uniform([batch_size, zdim], -1, 1)
@@ -76,14 +76,13 @@ init = tf.global_variables_initializer()
 # Config for session
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
-# Train
+# Generate
 with tf.Session(config=config) as sess:
     sess.run(init)
     saver = tf.train.Saver(max_to_keep=None)
-    # saver.restore(sess=sess, save_path='./models/Genre128RcganAE2/cdgan44000.ckpt')
     saver.restore(sess=sess, save_path='./models/Genre128RcganAE2/cdgan49999.ckpt')
 
-    # update generator
+    # generate
     gen_img, gen_img128 = sess.run([samples, samples128])
 
     # Store Generated
@@ -91,7 +90,7 @@ with tf.Session(config=config) as sess:
     genmix_imgs = np.uint8(genmix_imgs[:, :, :, ::-1])
     genmix_imgs = drawblock(genmix_imgs, n_classes)
     imsave(os.path.join(gen_dir, 'sample.jpg'), genmix_imgs)
-    # Store Generated 96
+    # Store Generated 128
     genmix_imgs = (np.transpose(gen_img128, [0, 2, 3, 1]) + 1.) * 127.5
     genmix_imgs = np.uint8(genmix_imgs[:, :, :, ::-1])
     genmix_imgs = drawblock(genmix_imgs, n_classes)
