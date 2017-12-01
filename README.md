@@ -1,6 +1,6 @@
 # ArtGAN
 
-Under construction...
+Under construction... (All codes are uploaded, though.)
 
 # Citation
 This repository contains codes for the following paper (under review):
