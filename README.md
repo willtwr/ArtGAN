@@ -22,3 +22,6 @@ which is an extension to the following paper (ICIP 2017):
   year={2017}
 }
 ```
+
+# Prerequisites
+- Python 2.7
