@@ -25,5 +25,4 @@ which is an extension to the following paper (ICIP 2017):
 
 # Prerequisites
 - Python 2.7
-
--[Tensorflow](https://github.com/tensorflow/tensorflow.git)
+- [Tensorflow](https://github.com/tensorflow/tensorflow.git)
