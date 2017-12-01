@@ -33,6 +33,8 @@ which is an extension to the following paper (ICIP 2017):
 
 # Trained models
 
+(Not working for now...)
+
 CIFAR-10 - http://www.cs-chan.com/source/ArtGAN/CIFAR64GANAE
 
 STL-10 - http://www.cs-chan.com/source/ArtGAN/STL128GANAE
