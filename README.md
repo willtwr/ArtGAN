@@ -34,3 +34,9 @@ which is an extension to the following paper (ICIP 2017):
 # Trained models
 
 CIFAR-10 - http://www.cs-chan.com/source/ArtGAN/CIFAR64GANAE
+STL-10 - http://www.cs-chan.com/source/ArtGAN/STL128GANAE
+Flowers - http://www.cs-chan.com/source/ArtGAN/Flower128GANAE
+CUB-200 - http://www.cs-chan.com/source/ArtGAN/CUB128GANAE
+Wikiart Artist - http://www.cs-chan.com/source/ArtGAN/Artist128GANAE
+Wikiart Genre - http://www.cs-chan.com/source/ArtGAN/Genre128GANAE
+Wikiart Style - http://www.cs-chan.com/source/ArtGAN/Style128GANAE
