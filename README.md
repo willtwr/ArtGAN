@@ -33,4 +33,4 @@ which is an extension to the following paper (ICIP 2017):
 
 # Trained models
 
-## CIFAR-10
+CIFAR-10 - http://www.cs-chan.com/source/ArtGAN/CIFAR64GANAE
