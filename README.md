@@ -1,6 +1,6 @@
 # ArtGAN
 
-Under construction...... (All codes are uploaded, though. Will upload trained models ASAP.)
+Under construction...... (All codes are uploaded, though.)
 
 # Citation
 This repository contains codes for the following paper (under review):
@@ -32,8 +32,6 @@ which is an extension to the following paper (ICIP 2017):
 \* Neon and aeon are required to load data. If other data loader is used, neon and aeon are not required. But, make sure that data format is 'NCHW'.
 
 # Trained models
-
-(Not working for now...)
 
 CIFAR-10 - http://www.cs-chan.com/source/ArtGAN/CIFAR64GANAE.zip
 
