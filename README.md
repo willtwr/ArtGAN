@@ -1,6 +1,6 @@
 # ArtGAN
 
-Under construction... (All codes are uploaded, though.)
+Under construction... (All codes are uploaded, though. Will upload trained models ASAP.)
 
 # Citation
 This repository contains codes for the following paper (under review):
