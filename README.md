@@ -35,16 +35,16 @@ which is an extension to the following paper (ICIP 2017):
 
 Each link below is the best trained model for the corresponding dataset:
 
-CIFAR-10 - http://www.cs-chan.com/source/ArtGAN/CIFAR64GANAE.zip
+- CIFAR-10 - http://www.cs-chan.com/source/ArtGAN/CIFAR64GANAE.zip
 
-STL-10 - http://www.cs-chan.com/source/ArtGAN/STL128GANAE.zip
+- STL-10 - http://www.cs-chan.com/source/ArtGAN/STL128GANAE.zip
 
-Flowers - http://www.cs-chan.com/source/ArtGAN/Flower128GANAE.zip
+- Flowers - http://www.cs-chan.com/source/ArtGAN/Flower128GANAE.zip
 
-CUB-200 - http://www.cs-chan.com/source/ArtGAN/CUB128GANAE.zip
+- CUB-200 - http://www.cs-chan.com/source/ArtGAN/CUB128GANAE.zip
 
-Wikiart Artist - http://www.cs-chan.com/source/ArtGAN/Artist128GANAE.zip
+- Wikiart Artist - http://www.cs-chan.com/source/ArtGAN/Artist128GANAE.zip
 
-Wikiart Genre - http://www.cs-chan.com/source/ArtGAN/Genre128GANAE.zip
+- Wikiart Genre - http://www.cs-chan.com/source/ArtGAN/Genre128GANAE.zip
 
-Wikiart Style - http://www.cs-chan.com/source/ArtGAN/Style128GANAE.zip
+- Wikiart Style - http://www.cs-chan.com/source/ArtGAN/Style128GANAE.zip
