@@ -33,6 +33,8 @@ which is an extension to the following paper (ICIP 2017):
 
 # Trained models
 
+Each link below is the best trained model for the corresponding dataset:
+
 CIFAR-10 - http://www.cs-chan.com/source/ArtGAN/CIFAR64GANAE.zip
 
 STL-10 - http://www.cs-chan.com/source/ArtGAN/STL128GANAE.zip
