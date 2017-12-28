@@ -48,3 +48,9 @@ Each link below is the best trained model for the corresponding dataset:
 - Wikiart Genre - http://www.cs-chan.com/source/ArtGAN/Genre128GANAE.zip
 
 - Wikiart Style - http://www.cs-chan.com/source/ArtGAN/Style128GANAE.zip
+
+# Feedback
+Suggestions and opinions of this work (both positive and negative) are greatly welcome. Please contact the authors by sending email to Wei Ren Tan at `wrtan.edu at gmail.com` or Chee Seng Chan at `cs.chan at um.edu.my`
+
+# License
+BSD-3, see LICENSE file for details.
