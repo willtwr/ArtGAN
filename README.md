@@ -33,7 +33,7 @@ which is an extension to the following paper (ICIP 2017):
 
 # Trained models
 
-Each link below is the best trained model for the corresponding dataset. Please download and extract to :
+Each link below is the best trained model for the corresponding dataset. Download and extract to 'models' folder:
 
 - CIFAR-10 - http://www.cs-chan.com/source/ArtGAN/CIFAR64GANAE.zip
 
