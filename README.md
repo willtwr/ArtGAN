@@ -1,6 +1,6 @@
 # ArtGAN
 
-Under construction...... (All codes are uploaded, though.)
+Under construction......
 
 # Citation
 This repository contains codes for the following paper (under review):
@@ -33,7 +33,7 @@ which is an extension to the following paper (ICIP 2017):
 
 # Trained models
 
-Each link below is the best trained model for the corresponding dataset:
+Each link below is the best trained model for the corresponding dataset. Please download and extract to :
 
 - CIFAR-10 - http://www.cs-chan.com/source/ArtGAN/CIFAR64GANAE.zip
 
