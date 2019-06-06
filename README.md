@@ -1,6 +1,6 @@
 # ArtGAN
 
-Under construction......
+Please visit https://github.com/cs-chan/ArtGAN for the final version.
 
 # Citation
 This repository contains codes for the following paper (under review):
